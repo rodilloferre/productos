@@ -22,3 +22,24 @@ button {
 button:hover {
   background-color: #2980b9;
 }
+.contador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 50px;
+  font-family: Arial, sans-serif;
+}
+
+.contador button {
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.contador input {
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+}
