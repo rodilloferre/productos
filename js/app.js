@@ -12,7 +12,7 @@ const cartTotalElement = document.getElementById('cart-total');
 // Cargar productos desde JSON
 async function loadProducts() {
     try {
-        const response = await fetch(`${REPO_URL}/productos.json`);
+        const response = await fetch("productos.json");
         if (!response.ok) throw new Error("Error al cargar productos");
         
         products = await response.json();
