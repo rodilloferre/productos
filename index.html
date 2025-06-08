@@ -1,25 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Ferreteria y Papeleria El Rodillo</title>
-  <link rel="stylesheet" href="estilos.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferretería y Papelería "El Rodillo"</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <h1>Ferreteria y Papeleria El Rodillo</h1>
-  <p>Productos</p>
+    <header>
+        <h1>Ferretería y Papelería "El Rodillo"</h1>
+        <nav>
+            <a href="admin.html">Panel Admin</a>
+        </nav>
+    </header>
 
-  <img src="imagenes/7501174912036.jpg" alt="Imagen de ejemplo" width="100">
-  <img src="imagenes/787257116684.jpg" alt="Imagen de ejemplo" width="100">
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Buscar productos...">
+        </div>
 
-  <br><br>
-  <button onclick="saludar()">Agregar al carrito</button>
-  
-  <div class="contador">
-    <button onclick="cambiarCantidad(-1)">-</button>
-    <input type="text" id="cantidad" value="1" >
-    <button onclick="cambiarCantidad(1)">+</button>
-  </div>
-    <script src="script.js"></script>
+        <div class="category-filter">
+            <button class="filter-btn active" data-category="all">Todos</button>
+            <button class="filter-btn" data-category="Ferreteria">Ferretería</button>
+            <button class="filter-btn" data-category="Papeleria">Papelería</button>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+            <!-- Productos cargados dinámicamente -->
+        </div>
+    </div>
+
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Tu Carrito</h2>
+            <button class="close-cart" id="close-cart">×</button>
+        </div>
+        <div id="cart-items"></div>
+        <div class="cart-total">
+            Total: $<span id="cart-total">0.00</span>
+        </div>
+        <button class="checkout-btn" id="checkout-btn">Pagar</button>
+    </div>
+
+    <div class="cart-icon" id="cart-icon">
+        🛒 <span class="cart-count" id="cart-count">0</span>
+    </div>
+
+    <script src="js/app.js"></script>
 </body>
 </html>
