@@ -61,7 +61,7 @@
         // Cargar y mostrar inventario
         async function loadInventory() {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/tuusuario/ferreteria-el-rodillo/main/data/productos.json');
+                const response = await fetch('https://raw.githubusercontent.com/rodilloferre/productos/main/data/productos.json');
                 const products = await response.json();
                 
                 const tableBody = document.querySelector('#inventory-table tbody');
