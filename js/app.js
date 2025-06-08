@@ -1,5 +1,5 @@
 // Configuración
-const REPO_URL = 'https://raw.githubusercontent.com/tuusuario/ferreteria-el-rodillo/main/data';
+const REPO_URL = 'https://raw.githubusercontent.com/rodilloferre/productos/main/data';
 let products = [];
 let cart = [];
 
@@ -131,7 +131,5 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCart();
     
     // Configurar otros event listeners...
-fetch('https://raw.githubusercontent.com/rodilloferre/productos/main/data/productos.json')
-  .then(response => response.json())
-  .then(data => console.log(data));
+
 });
