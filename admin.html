@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - El Rodillo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .form-group { margin-bottom: 15px; }
+        button { padding: 8px 15px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Panel de Administración</h1>
+    
+    <section>
+        <h2>Agregar Producto</h2>
+        <form id="add-product-form">
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="product-name" required>
+            </div>
+            <div class="form-group">
+                <label>Precio:</label>
+                <input type="number" id="product-price" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>Stock:</label>
+                <input type="number" id="product-stock" required>
+            </div>
+            <div class="form-group">
+                <label>Categoría:</label>
+                <select id="product-category">
+                    <option value="Ferreteria">Ferretería</option>
+                    <option value="Papeleria">Papelería</option>
+                </select>
+            </div>
+            <button type="submit">Agregar Producto</button>
+        </form>
+    </section>
+    
+    <section>
+        <h2>Inventario Actual</h2>
+        <table id="inventory-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <script>
+        // Cargar y mostrar inventario
+        async function loadInventory() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/tuusuario/ferreteria-el-rodillo/main/data/productos.json');
+                const products = await response.json();
+                
+                const tableBody = document.querySelector('#inventory-table tbody');
+                tableBody.innerHTML = '';
+                
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.id}</td>
+                        <td>${product.name}</td>
+                        <td>$${product.price.toFixed(2)}</td>
+                        <td>${product.stock}</td>
+                        <td>
+                            <button class="edit-btn" data-id="${product.id}">Editar</button>
+                            <button class="delete-btn" data-id="${product.id}">Eliminar</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error al cargar inventario:", error);
+            }
+        }
+        
+        // Cargar inventario al iniciar
+        document.addEventListener('DOMContentLoaded', loadInventory);
+    </script>
+</body>
+</html>
