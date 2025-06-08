@@ -5,243 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ferretería y Papelería "El Rodillo"</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1><i class="fas fa-tools"></i> Ferretería y Papelería "El Rodillo"</h1>
+        <h1>Ferretería y Papelería "El Rodillo"</h1>
         <nav>
-            <a href="#"><i class="fas fa-home"></i> Inicio</a>
-            <a href="#"><i class="fas fa-info-circle"></i> Nosotros</a>
-            <a href="#"><i class="fas fa-phone"></i> Contacto</a>
-            <a href="admin.html"><i class="fas fa-user-cog"></i> Admin</a>
+            <a href="admin.html">Panel Admin</a>
         </nav>
     </header>
 
     <div class="container">
         <div class="search-bar">
             <input type="text" id="search-input" placeholder="Buscar productos...">
-            <button id="search-btn"><i class="fas fa-search"></i></button>
         </div>
 
         <div class="category-filter">
-            <button class="filter-btn active" data-category="all"><i class="fas fa-boxes"></i> Todos</button>
-            <button class="filter-btn" data-category="Ferreteria"><i class="fas fa-hammer"></i> Ferretería</button>
-            <button class="filter-btn" data-category="Papeleria"><i class="fas fa-pencil-alt"></i> Papelería</button>
-            <button class="filter-btn" data-category="Herramientas"><i class="fas fa-tools"></i> Herramientas</button>
+            <button class="filter-btn active" data-category="all">Todos</button>
+            <button class="filter-btn" data-category="Ferreteria">Ferretería</button>
+            <button class="filter-btn" data-category="Papeleria">Papelería</button>
         </div>
 
         <div class="product-grid" id="product-grid">
-            <!-- Los productos se cargarán dinámicamente desde GitHub -->
-            <div class="loading">
-                <i class="fas fa-spinner fa-spin"></i> Cargando productos...
-            </div>
+            <!-- Productos cargados dinámicamente -->
         </div>
-    </div>
-
-    <!-- Carrito de compras -->
-    <div class="cart-icon" id="cart-icon">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="cart-count" id="cart-count">0</span>
     </div>
 
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
-            <h2><i class="fas fa-shopping-basket"></i> Tu Carrito</h2>
-            <button class="close-cart" id="close-cart"><i class="fas fa-times"></i></button>
+            <h2>Tu Carrito</h2>
+            <button class="close-cart" id="close-cart">×</button>
         </div>
-        <div id="cart-items">
-            <!-- Los items del carrito aparecerán aquí -->
-            <div class="empty-cart">
-                <i class="fas fa-cart-arrow-down"></i>
-                <p>Tu carrito está vacío</p>
-            </div>
-        </div>
+        <div id="cart-items"></div>
         <div class="cart-total">
             Total: $<span id="cart-total">0.00</span>
         </div>
-        <button class="checkout-btn" id="checkout-btn"><i class="fas fa-credit-card"></i> Proceder al pago</button>
+        <button class="checkout-btn" id="checkout-btn">Pagar</button>
     </div>
 
-    <!-- Modal de registro -->
-    <div class="modal" id="register-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-user-plus"></i> Registro de Cliente</h2>
-                <button class="close-modal" id="close-register-modal"><i class="fas fa-times"></i></button>
-            </div>
-            <form id="register-form">
-                <div class="form-group">
-                    <label for="name"><i class="fas fa-user"></i> Nombre completo</label>
-                    <input type="text" id="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope"></i> Correo electrónico</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone"><i class="fas fa-phone"></i> Teléfono</label>
-                    <input type="tel" id="phone" required>
-                </div>
-                <div class="form-group">
-                    <label for="address"><i class="fas fa-map-marker-alt"></i> Dirección</label>
-                    <input type="text" id="address" required>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-check-circle"></i> Registrar y Pagar</button>
-            </form>
-        </div>
+    <div class="cart-icon" id="cart-icon">
+        🛒 <span class="cart-count" id="cart-count">0</span>
     </div>
 
-    <!-- JavaScript -->
-    <script>
-        // Configuración de GitHub
-        const GITHUB_USER = 'rodilloferre'; // Reemplaza con tu usuario de GitHub
-        const REPO_NAME = 'productos'; // Nombre de tu repositorio
-        const PRODUCTS_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/main/data/productos.json`;
-        
-        // Elementos del DOM
-        const productGrid = document.getElementById('product-grid');
-        const cartIcon = document.getElementById('cart-icon');
-        const cartSidebar = document.getElementById('cart-sidebar');
-        const closeCartBtn = document.getElementById('close-cart');
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartCountElement = document.getElementById('cart-count');
-        const cartTotalElement = document.getElementById('cart-total');
-        const checkoutBtn = document.getElementById('checkout-btn');
-        const registerModal = document.getElementById('register-modal');
-        const closeRegisterModal = document.getElementById('close-register-modal');
-        const registerForm = document.getElementById('register-form');
-        const searchInput = document.getElementById('search-input');
-        const filterButtons = document.querySelectorAll('.filter-btn');
-
-        // Variables globales
-        let products = [];
-        let cart = JSON.parse(localStorage.getItem('elrodillo_cart')) || [];
-
-        // Cargar productos desde GitHub
-        async function loadProducts() {
-            try {
-                const response = await fetch(PRODUCTS_URL);
-                if (!response.ok) throw new Error("Error al cargar productos");
-                
-                products = await response.json();
-                renderProducts(products);
-            } catch (error) {
-                console.error("Error al cargar productos:", error);
-                productGrid.innerHTML = `
-                    <div class="error">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>No se pudieron cargar los productos. Por favor intenta más tarde.</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Renderizar productos
-        function renderProducts(productsToRender) {
-            productGrid.innerHTML = '';
-            
-            if (productsToRender.length === 0) {
-                productGrid.innerHTML = `
-                    <div class="no-products">
-                        <i class="fas fa-box-open"></i>
-                        <p>No hay productos disponibles en esta categoría</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            productsToRender.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                productCard.dataset.category = product.category;
-                
-                productCard.innerHTML = `
-                    <img src="${product.imageUrl || 'img/placeholder-product.jpg'}" alt="${product.name}" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-title">${product.name}</h3>
-                        <div class="product-price">$${product.price.toFixed(2)}</div>
-                        <div class="product-stock">Disponibles: ${product.stock}</div>
-                        <span class="product-category">${product.category}</span>
-                        <button class="add-to-cart" data-id="${product.id}">
-                            <i class="fas fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
-                `;
-                
-                productGrid.appendChild(productCard);
-            });
-
-            // Agregar event listeners a los botones
-            document.querySelectorAll('.add-to-cart').forEach(button => {
-                button.addEventListener('click', addToCart);
-            });
-        }
-
-        // Funciones del carrito (addToCart, updateCart, etc.)
-        // ... [Aquí irían todas las funciones del carrito que vimos anteriormente]
-
-        // Inicialización
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProducts();
-            updateCart();
-            
-            // Event listeners
-            cartIcon.addEventListener('click', () => {
-                cartSidebar.classList.add('open');
-            });
-            
-            closeCartBtn.addEventListener('click', () => {
-                cartSidebar.classList.remove('open');
-            });
-            
-            checkoutBtn.addEventListener('click', () => {
-                if (cart.length === 0) {
-                    alert('Tu carrito está vacío');
-                    return;
-                }
-                registerModal.style.display = 'flex';
-            });
-            
-            closeRegisterModal.addEventListener('click', () => {
-                registerModal.style.display = 'none';
-            });
-            
-            // ... [otros event listeners]
-        });
-
-        // Función para manejar el registro
-        registerForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const customerData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                address: document.getElementById('address').value,
-                cart: cart,
-                total: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
-                date: new Date().toISOString()
-            };
-            
-            try {
-                // Aquí iría el código para guardar en GitHub o tu backend
-                console.log('Datos del cliente:', customerData);
-                
-                alert('¡Gracias por tu compra! Se ha registrado tu pedido.');
-                
-                // Limpiar carrito
-                cart = [];
-                localStorage.removeItem('elrodillo_cart');
-                updateCart();
-                registerModal.style.display = 'none';
-                cartSidebar.classList.remove('open');
-                
-            } catch (error) {
-                console.error('Error al procesar el pago:', error);
-                alert('Hubo un error al procesar tu pago. Por favor intenta nuevamente.');
-            }
-        });
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>
