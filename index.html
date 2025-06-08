@@ -379,21 +379,12 @@
     </div>
 
     <script>
-fetch('data/productos.json')  // Cambia la ruta según tu estructura de archivos
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        return response.json();  // Usamos .json() en lugar de .text()
-    })
-    .then(data => {
-        // 'data' ya es un objeto/array JavaScript parseado
-        console.log('Productos cargados:', data);
-        loadProducts(data);  // Pasa los datos directamente a tu función
-    })
-    .catch(error => {
-        console.error('Error al cargar productos:', error);
-        // Manejo de errores (mostrar mensaje al usuario, etc.)
+fetch('productos.csv')
+    .then(response => response.text())
+    .then(csvData => {
+        // Parsear CSV a array de objetos
+        const products = parseCSV(csvData);
+        loadProducts(products);
     });
 
         // Carrito de compras
