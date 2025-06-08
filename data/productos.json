@@ -1,0 +1,19 @@
+// productos.json
+[
+    {
+        "id": 1,
+        "name": "Martillo de acero",
+        "price": 150.00,
+        "stock": 25,
+        "category": "Ferreteria",
+        "imageUrl": "img/martillo.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Cuaderno profesional",
+        "price": 75.50,
+        "stock": 40,
+        "category": "Papeleria",
+        "imageUrl": "img/cuaderno.jpg"
+    }
+]
