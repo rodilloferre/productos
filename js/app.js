@@ -131,4 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCart();
     
     // Configurar otros event listeners...
+fetch('https://raw.githubusercontent.com/rodilloferre/productos/main/data/productos.json')
+  .then(response => response.json())
+  .then(data => console.log(data));
 });
