@@ -1,5 +1,5 @@
 // Configuración
-const REPO_URL = 'https://raw.githubusercontent.com/rodilloferre/productos/main/data/productos.json';
+const REPO_URL = 'https://raw.githubusercontent.com/rodilloferre/productos/refs/heads/main/imagenes/app.js';
 let products = [];
 let cart = [];
 
